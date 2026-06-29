@@ -2,6 +2,7 @@
 import React from 'react'
 import useSWR from 'swr';
 import { ComplexProducts } from '../types';
+import Image from 'next/image';
 
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
@@ -41,7 +42,8 @@ const page = () => {
 
             ))}</div>
 
-
+    )
+}
 
 
 export default page

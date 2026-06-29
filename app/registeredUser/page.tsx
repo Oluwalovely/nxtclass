@@ -1,24 +1,20 @@
-import { getAllUsers } from "../actions/user.actions"
+import React from 'react'
+import { dbConnect } from '../libs/dbconnect'
+import UserModel from '../models/User.model'
+import { User } from '../types'
 
-export default async function UsersPage() {
-    const users = await getAllUsers()
-
+const Page = async () => {
+    await dbConnect()
+    const users: User[] = await UserModel.find()
     return (
         <div>
-            {users.map((user) => (
-                <div key={user._id} className="border border-gray-300 w-1/5 rounded-2xl p-3 flex gap-3 /basis-1/2 hover:shadow">
-                    <div >
-                        <p>{user.firstname}</p>
-                        <p>{user.lastname}</p>
-                        <code>{user.email}</code>
-                    </div>
-                </div>
-            ))}
+            {
+                users.map((_, idx) => (
+                    <div key={_._id}>{idx + 1}.{_.firstname + " " + _.lastname}</div>
+                ))
+            }
         </div>
     )
 }
 
-
-
-
-
+export default Page

@@ -1,40 +1,108 @@
-import React from 'react'
-import { registerUser } from '../actions/user.actions'
+"use client";
+import React, { ChangeEvent, useState } from "react";
+import { registerUser } from "../actions/user.actions";
+import { User } from "../types";
 
 const Page = () => {
-  return (
-    <div className="h-screen flex items-center justify-center p-5">
-        <form action={registerUser} className="bg-gray-100 p-10 rounded-sm shadow-md p-10 md:1/2 xl:1/3 flex flex-col gap-4 justify-center">
-            
-            <h1 className='text-center text-2xl font-bold'>Register Here</h1>
-            
-            <div>
-                <label htmlFor="firstname" className='text-black'>First Name:</label>
-                <input type="text" name="firstname" className='w-full p-3 bg-gray-300 rounded-sm mt-2 mb-5 text-black' placeholder='Enter your first name'/> 
+    const [User, setUser] = useState({
+        firstname: "",
+        lastname: "",
+        email: "",
+        password: "",
+    });
+
+
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        console.log(e.target.value);
+        console.log(e.target.name);
+
+        // const name = e.target.name;
+        // const value = e.target.value;
+        console.log(e.target);
+
+
+        const { name, value } = e.target
+
+
+        setUser({
+            ...User,
+            [name]: value
+        });
+
+        // console.log(User);
+
+
+
+    };
+
+    const submitForm = async (User: User) => {
+        console.log(User);
+        registerUser(User)
+        console.log("I am working");
+
+    }
+
+
+    return (
+        <div className="  flex h-screen  justify-center items-center px-5 ">
+            <div
+                // action={registerUser}
+                className="bg-gray-100 shadow-lg rounded-sm p-10 w-full md:w-1/2 xl:w-1/3  flex-col gap-4 flex justify-center /items-center"
+            >
+                <h1 className="text-center text-2xl font-bold">Register Here</h1>
+
+                <div>
+                    <label htmlFor="firstname">First Name:</label>
+                    <br />
+                    <input
+                        type="text"
+                        name="firstname"
+                        className="border /outline-1 /focus:outline-green-700 p-2 w-full rounded-sm "
+                        onChange={handleChange}
+                    />
+                </div>
+
+                <div>
+                    <label htmlFor="lastname">Last Name</label>
+                    <br />
+                    <input
+                        type="text"
+                        name="lastname"
+                        className="border /outline-1 /focus:outline-green-700 p-2 w-full rounded-sm "
+                        onChange={handleChange}
+                    />
+                </div>
+
+                <div>
+                    <label htmlFor="Email">Email:</label>
+                    <br />
+                    <input
+                        type="text"
+                        name="email"
+                        className="border /outline-1 /focus:outline-green-700 p-2 w-full rounded-sm "
+                        onChange={handleChange}
+
+                    />
+                </div>
+
+                <div>
+                    <label htmlFor="Password">Password:</label>
+                    <br />
+                    <input
+                        type="password"
+                        name="password"
+                        className="border /outline-1 /focus:outline-green-700 p-2 w-full rounded-sm"
+                        onChange={handleChange}
+                    />
+                </div>
+
+                <button onClick={() => submitForm(User)} className="py-2 bg-black text-white rounded-sm /hover:bg-green-800  sm:/hover:bg-red-800 md:/hover:bg-blue-800 hover:/cursor-pointer /hover:-translate-y-1 transition delay-150 /hover:scale-105 /animate-spin">
+                    Register
+                </button>
             </div>
+        </div>
+    );
+};
 
-            <div>
-                <label htmlFor="lastname" className='text-black'>Last Name:</label>
-                <input type="text" name="lastname" className='w-full p-3 bg-gray-300 rounded-sm mt-2 mb-5 text-black' placeholder='Enter your last name'/> 
-            </div>
-
-            <div>
-                <label htmlFor="email" className='text-black'>Email</label>
-                <input type="email" name="email" className='w-full p-3 bg-gray-300 rounded-sm mt-2 mb-5 text-black' placeholder='Enter your email'/> 
-            </div>
-
-            <div>
-                <label htmlFor="password" className='text-black'>Password</label>
-                <input type="password" name="password" className='w-full p-3 bg-gray-300 rounded-sm mt-2 mb-5 text-black' placeholder='Enter your password'/> 
-            </div>
-
-
-            <button className="bg-black text-white hover:pointer hover:-translate-y-2 hover:gray-200">Register</button>
-        </form>
-    
-    
-    </div>
-  )
-}
-
-export default Page
+export default Page;
