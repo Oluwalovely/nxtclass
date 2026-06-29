@@ -45,3 +45,24 @@ type RatingsDeets = {
     "reviewerEmail": string
 
 }
+
+
+export type Posts = {
+    id: number,
+    title: string,
+    body: string,
+    tags: string[],
+    reactions: {
+        "likes": number,
+        "dislikes": number
+    },
+    views: number,
+    userId: number
+}
+
+export type User = {
+    firstname: string,
+    lastname: string,
+    email: string,
+    password: string,
+}
