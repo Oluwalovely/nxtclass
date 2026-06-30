@@ -1,36 +1,51 @@
 "use server"
 
-import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import { dbConnect } from "../libs/dbconnect";
 import UserModel from "../models/User.model";
-import { revalidatePath } from "next/cache";
 import { User } from "../types";
+import { redirect } from "next/navigation";
+import bcrypt from "bcryptjs";
 
-
-export const registerUser = async(form:User)=>{
+export const registerUser = async (form: User) => {
     console.log(form);
-    const user = {
-        // firstname: form.get('firstname') as string,
-        // lastname: form.get('lastname') as string,
-        // email: form.get('email') as string,
-        // password: form.get('password') as string
-        firstname:form.firstname,
-        lastname:form.lastname,
-        email:form.email,
-        password:form.password
-    }
+    // const user= {
+    // firstname:String(form.get("firstname")),
+    // lastname:form.get("firstname")?.toString(),
+    // email:form.get("email")?.toString(),
+    // password:form.get('password')?.toString()
+    const firstname = form.firstname
+    const lastname = form.lastname
+    const email = form.email
+    const password = form.password
+    // }
 
     await dbConnect()
-    await UserModel.create(user)
-    console.log(user);
+    const saltRound = 10
+    const hashedPassword = await bcrypt.hash(form.password, saltRound)
 
+    await UserModel.create({ firstname, lastname, email, password: hashedPassword })
 
-    revalidatePath('/registeredUser')
-    redirect('/registeredUser')
+    console.log("i am workinggggg");
+
+    revalidatePath("/users")
+    // redirect("/users")
+
 }
 
-export const getAllUsers = async()=>{
+export const getUser = async (id: string) => {
     await dbConnect()
-    const users = await UserModel.find().select('-password').lean()
-    return users
+
+    const user = await UserModel.findById(id)
+
+    if (!user) {
+
+        return {
+            message: "user does not exist"
+        };
+    } else {
+
+        return user;
+    }
+
 }
