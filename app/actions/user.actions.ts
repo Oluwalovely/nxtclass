@@ -50,7 +50,7 @@ export const registerUser = async (form: User) => {
             message: "user created successfully",
             data: createdUser
         }
-        // console.log("i am workinggggg");
+        
 
 
     } catch (error:any) {
@@ -91,29 +91,6 @@ export const getUser = async (id: string) => {
 
 }
 
-// export const loginUser = async (form: FormData) => {
-//     const email = form.get("email")?.toString()
-//     const password = form.get("password")?.toString()
-//     await dbConnect()
-
-//     const user = await UserModel.findOne({ email: email })
-
-//     if (!user) {
-//         return {
-//             message: "Invalid email or password"
-//         };
-//     }
-
-//     const isMatch = await bcrypt.compare(password, user.password)
-
-//     if (!isMatch) {
-//         return {
-//             message: "Invalid email or password"
-//         };
-//     }
-
-//     return user;
-// }
 
 export const loginUser = async (previousState: any, form: FormData) => {
     const email = form.get("email")?.toString();
@@ -144,23 +121,7 @@ export const loginUser = async (previousState: any, form: FormData) => {
 }
 
 
-// export const deleteUser = async (form: FormData) => {
-//     const id = form.get("id")?.toString();
 
-//     if (!id) {
-//         return { message: "Invalid id" };
-//     }
-
-//     await dbConnect();
-//     const user = await UserModel.findByIdAndDelete(id);
-
-//     if (!user) {
-//         return { message: "user does not exist" };
-//     }
-
-//     revalidatePath("/registeredUser");
-//     return { message: "user deleted successfully" };
-// }
 
 export const deleteUser = async (form: FormData) => {
     const id = form.get("id")?.toString();
