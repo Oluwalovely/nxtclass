@@ -1,29 +1,126 @@
-'use client'
-import { useActionState } from 'react'
-import { loginUser } from '../actions/user.actions'
+"use client";
+import React, { ChangeEvent, useState } from "react";
 
+import { loginUser } from "../actions/user.actions";
+import { refresh } from "next/cache";
+import { dbConnect } from "../libs/dbconnect";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
-    const [state, formAction] = useActionState(loginUser, null)
+    const [User, setUser] = useState({
+        email: "",
+        password: "",
+    });
 
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+        // const { name, value } = e.target;
+        // console.log(e.target.name, e.target.value);
+
+
+        // setUser({
+        //   ...User,
+        //   [name]: value,
+        // });
+
+        console.log(e.target.value);
+        console.log(e.target.name);
+        console.log(e.target);
+
+        const { name, value } = e.target;
+
+        setUser({
+            ...User,
+            [name]: value,
+        });
+    };
+    const router = useRouter();
+    const handleLogin = async () => {
+        console.log(User);
+
+        const response = await loginUser(User);
+
+        console.log(response.message);
+        if (response.status == 400) {
+            alert(response.message);
+        } else {
+            router.push("/users");
+        }
+        // refresh()
+    };
     return (
-        <div className='flex h-screen justify-center items-center px-5'>
-            <form action={formAction} className='bg-gray-100 shadow-lg rounded-sm p-10 w-full md:w-1/2 xl:w-1/3 flex-col gap-4 flex justify-center'>
-                <h1 className='text-center text-2xl font-bold'>Login Here</h1>
+        <div className="  flex h-screen  justify-center items-center px-5 ">
+            <div className="bg-gray-100 shadow-lg rounded-sm p-10 w-full md:w-1/2 xl:w-1/3  flex-col gap-4 flex justify-center /items-center">
+                <h1 className="text-center text-2xl font-bold">Login Here</h1>
                 <div>
-                    <label htmlFor="email">Email:</label><br />
-                    <input type="text" name="email" id="email" className='border outline-1 focus:outline-green-700 p-2 w-full rounded-sm' autoFocus />
+                    <label htmlFor="Email">Email:</label>
+                    <br />
+                    <input
+                        onChange={handleInputChange}
+                        type="text"
+                        name="email"
+                        className="border outline-1 focus:outline-green-700 p-2 w-full rounded-sm "
+                        autoFocus
+                    />
                 </div>
+
                 <div>
-                    <label htmlFor="password">Password:</label><br />
-                    <input type="password" name="password" id="password" className='border outline-1 focus:outline-green-700 p-2 w-full rounded-sm' />
+                    <label htmlFor="Password">Password:</label>
+                    <br />
+                    <input
+                        onChange={handleInputChange}
+                        type="password"
+                        name="password"
+                        className="border outline-1 focus:outline-green-700 p-2 w-full rounded-sm"
+                    />
                 </div>
-                {state?.message && <p className='text-red-600 text-sm'>{state.message}</p>}
-                <button type="submit" className='py-2 bg-black text-white rounded-sm hover:bg-green-800 sm:hover:bg-red-800 md:hover:bg-blue-800 hover:cursor-pointer hover:-translate-y-1 transition delay-150'>Login</button>
-            </form>
+
+                <button
+                    onClick={handleLogin}
+                    className="py-2 bg-black text-white rounded-sm hover:bg-green-800  sm:hover:bg-red-800 md:hover:bg-blue-800 hover:cursor-pointer hover:-translate-y-1 transition delay-150 /hover:scale-105 /animate-spin"
+                >
+                    Login
+                </button>
+            </div>
         </div>
-    )
+    );
+};
 
-}
+export default Page;
 
-export default Page
+
+
+
+
+
+// 'use client'
+// import { useActionState } from 'react'
+// import { loginUser } from '../actions/user.actions'
+// import { useRouter } from 'next/navigation'
+
+
+// const Page = () => {
+//     const [state, formAction] = useActionState(loginUser, null)
+
+
+//     return (
+//         <div className='flex h-screen justify-center items-center px-5'>
+//             <form action={formAction} className='bg-gray-100 shadow-lg rounded-sm p-10 w-full md:w-1/2 xl:w-1/3 flex-col gap-4 flex justify-center'>
+//                 <h1 className='text-center text-2xl font-bold'>Login Here</h1>
+//                 <div>
+//                     <label htmlFor="email">Email:</label><br />
+//                     <input type="text" name="email" id="email" className='border outline-1 focus:outline-green-700 p-2 w-full rounded-sm' autoFocus />
+//                 </div>
+//                 <div>
+//                     <label htmlFor="password">Password:</label><br />
+//                     <input type="password" name="password" id="password" className='border outline-1 focus:outline-green-700 p-2 w-full rounded-sm' />
+//                 </div>
+//                 {state?.message && <p className='text-red-600 text-sm'>{state.message}</p>}
+//                 <button type="submit" className='py-2 bg-black text-white rounded-sm hover:bg-green-800 sm:hover:bg-red-800 md:hover:bg-blue-800 hover:cursor-pointer hover:-translate-y-1 transition delay-150'>Login</button>
+//             </form>
+//         </div>
+//     )
+
+// }
+
+// export default Page
+
