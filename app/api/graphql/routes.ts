@@ -14,27 +14,28 @@ const typeDefs = gql`
 `;
 
 const resolvers = {
-  Query: {
-    hello: () => "This is what you should return",
-    person: () => {
-      return {
-        name: "Onifade Joshua",
-        age:12
-      };
+    Query: {
+        hello: () => "This is what you should return",
+        person: () => {
+            return {
+                name: "Onifade Joshua",
+                age: 12,
+                gender: "Male"
+            };
+        },
     },
-  },
 };
 
 const apolloServer = new ApolloServer({
-  typeDefs,
-  resolvers,
+    typeDefs,
+    resolvers,
 });
 
 const handler = startServerAndCreateNextHandler(apolloServer);
 export const GET = (request: Request) => {
-  return handler(request);
+    return handler(request);
 };
 
 export const POST = (request: Request) => {
-  return handler(request);
+    return handler(request);
 };
